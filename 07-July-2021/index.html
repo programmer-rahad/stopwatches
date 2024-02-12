@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Stopwatch using html, css and javascript ( Wednesday, 07 July 2021)</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #fea600;
+        color: #fff;
+        text-align: center;
+      }
+      .stopwatch {
+        margin-top: 50vh;
+        transform: translateY(-50%);
+      }
+      .time {
+        font-size: 45px;
+        font-weight: 700;
+        margin: 15px 0;
+        font-family: cursive;
+        letter-spacing: 5px;
+      }
+      button {
+        margin: 0 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        color: #fff;
+        border: 1px solid #fff;
+        padding: 10px 25px;
+        background-color: transparent;
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: 1px;
+        transition-duration: 0.34s;
+      }
+      button:hover {
+        color: #111;
+        background-color: #fff;
+        border-color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="stopwatch">
+      <p class="time">
+        <span class="second">00</span>:<span class="tens">00</span>
+      </p>
+      <button class="start">Start</button>
+      <button class="stop">Stop</button>
+      <button class="reset">Reset</button>
+    </div>
+
+    <script>
+      const secondOutput = document.querySelector(".second");
+      const tensOutput = document.querySelector(".tens");
+      const buttons = document.querySelectorAll("button");
+      let second = 0;
+      let tens = 0;
+      let secondInterval;
+      let tensInterval;
+      let tempCondition = true;
+      let i = 0;
+
+      // Reset
+      second = second < 10 ? "0" + second : second;
+      secondOutput.innerText = second;
+
+      tens = tens < 10 ? "0" + tens : tens;
+      tensOutput.innerText = tens;
+
+      while (i < buttons.length) {
+        buttons[i].addEventListener("click", function () {
+          if (this.className === "start" && tempCondition) {
+            secondInterval = setInterval(function () {
+              second++;
+              second = second < 10 ? "0" + second : second;
+              secondOutput.innerText = second;
+            }, 1000);
+            tensInterval = setInterval(() => {
+              tens = tens > 98 ? 0 : ++tens;
+              tens = tens < 10 ? "0" + tens : tens;
+              tensOutput.innerText = tens;
+            }, 10);
+            tempCondition = !tempCondition;
+          } else if (this.className === "stop") {
+            clearAllInterval();
+          } else if (this.className === "reset") {
+            clearAllInterval();
+            second = tens = "00";
+            secondOutput.innerText = tensOutput.innerText = second;
+          }
+        });
+        i++;
+      }
+
+      function clearAllInterval() {
+        clearInterval(secondInterval);
+        clearInterval(tensInterval);
+        tempCondition = true;
+      }
+    </script>
+  </body>
+</html>

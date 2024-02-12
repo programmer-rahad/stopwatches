@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>
+      Stopwatch using vanilla js ( 11:04am Monday 20 December 2021 )
+    </title>
+
+    <style>
+      body {
+        background-color: #fea600;
+        background-color: #1a1a1a;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        text-align: center;
+        font-family: Arial;
+      }
+
+      .container {
+        max-width: 1170px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .stopwatch {
+        color: #fff;
+        max-width: 530px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .stopwatch a {
+        border: 1px solid #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+        margin: 10px;
+        padding: 10px 30px;
+        padding-top: 12.5px; 
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 1px;
+        display: inline-block;
+      }
+      .stopwatch a:hover {
+        background-color: #fff;
+        color: #000;
+      }
+
+      .stopwatch .timer {
+        font-size: 60px;
+        font-weight: 900;
+        margin-bottom: 19px;
+      }
+      .stopwatch .timer * {
+        font-family: cursive;
+        letter-spacing: 7px;
+      }
+
+      .stopwatch .timer span:not(.tens) {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="stopwatch">
+        <p class="timer">
+          <span class="hours"> 00:</span><span class="minutes">00:</span
+          ><span class="second">00:</span><span class="tens">00</span>
+        </p>
+        <a href="#">Start</a>
+        <a href="#">Stop</a>
+        <a href="#">Reset</a>
+      </div>
+    </div>
+    
+    <script>
+      const startButton = document.querySelector(".stopwatch a:first-of-type");
+      const stopButton = document.querySelector(".stopwatch a:nth-of-type(2)");
+      const resetButton = document.querySelector(".stopwatch a:nth-of-type(3)");
+
+      const hoursOutput = document.querySelector(".hours");
+      const minutesOutput = document.querySelector(".minutes");
+      const secondOutput = document.querySelector(".second");
+      const tensOutput = document.querySelector(".tens");
+
+      document.addEventListener("DOMContentLoaded", function () {
+      
+        !(function () {
+          let hours = 0;
+          let minutes = 0;
+          let second = 0;
+          let tens = "00";
+          let id;
+          function showOutput() {
+            hoursOutput.innerHTML = hours + ":";
+            minutesOutput.innerHTML = minutes + ":";
+            secondOutput.innerHTML = second + ":";
+            tensOutput.innerHTML = tens;
+          }
+          showOutput();
+
+          startButton.addEventListener("click", function () {
+            event.preventDefault();
+            if (id === undefined) {
+              id = setInterval(function () {
+                tens++;
+                tens = tens < 10 ? 0 + "" + tens : tens;
+                if (tens > 99) {
+                  tens = "00";
+                  second++;
+                  second = second < 10 ? "0" + second : second;
+                  secondOutput.style.display = "inline-block";
+
+                  if (second > 59) {
+                    second = "00";
+                    minutes++;
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    minutesOutput.style.display = "inline-block";
+
+                    if (minutes > 59) {
+                      minutes = "00";
+                      hours++;
+                      hours = hours < 10 ? "0" + hours : hours;
+                      hoursOutput.style.display = "inline-block";
+                    }
+                  }
+                }
+
+                showOutput();
+              }, 10);
+            }
+          });
+
+          stopButton.addEventListener("click", function () {
+            event.preventDefault();
+            clearInterval(id);
+            id = undefined;
+          });
+
+          resetButton.addEventListener("click", function () {
+            event.preventDefault();
+            clearInterval(id);
+            id = undefined;
+            hours = minutes = second = tens = "00";
+            showOutput();
+          });
+        })();
+     
+    });
+    </script>
+  </body>
+</html>

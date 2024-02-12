@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Stopwatch using vanilla js ( Wednesday, 30 June 2021)</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #f4dc52;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding-top: 70px;
+        padding-bottom: 70px;
+      }
+      .stopwatch {
+        text-align: center;
+      }
+
+      .time {
+        font-size: 45px;
+        font-weight: 700;
+        margin: 15px 0;
+        font-family: cursive;
+        letter-spacing: 5px;
+        color: #bea306;
+      }
+      button {
+        border: 3px solid #d8bb15;
+        background-color: #d8bb15;
+        margin: 0 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        color: #fff;
+        padding: 8.7px 25px;
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: 1px;
+        transition-duration: 0.34s;
+      }
+      button:hover {
+        background-color: #e6c60f;
+      }
+      button.reset,
+      button.stop {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stopwatch">
+      <div class="time">
+        <span class="seconds">00</span>:<span class="tens">00</span>
+      </div>
+      <button class="start">Start</button>
+      <button class="stop">Stop</button>
+      <button class="reset">Reset</button>
+    </div>
+    <script>
+      "use strict";
+
+      // Variables
+      let startButton = document.querySelector("button.start");
+      let stopButton = document.querySelector("button.stop");
+      let resetButton = document.querySelector("button.reset");
+      let secondOutput = document.querySelector(".seconds");
+      let tensOutput = document.querySelector(".tens");
+      let seconds = 0;
+      let tens = 0;
+      let clear;
+
+      // Reset
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      tens = tens < 10 ? "0" + tens : tens;
+
+      secondOutput.innerHTML = seconds;
+      tensOutput.innerHTML = tens;
+
+      startButton.addEventListener("click", function () {
+        this.style.display = "none";
+        stopButton.style.display = resetButton.style.display = "inline-block";
+
+        clear = setInterval(function () {
+          tens++;
+          if (tens > 99) {
+            seconds++;
+            secondOutput.innerHTML = seconds < 10 ? "0" + seconds : seconds;
+          }
+          tensOutput.innerHTML =
+            tens < 10 ? "0" + tens : tens > 99 ? (tens = "00") : tens;
+        }, 10);
+      });
+
+      stopButton.addEventListener("click", function () {
+        this.style.display = "none";
+        startButton.style.display = "inline-block";
+        clearInterval(clear);
+      });
+
+      resetButton.addEventListener("click", function () {
+        clearInterval(clear);
+        this.style.display = "none";
+        startButton.style.display = "inline-block";
+        stopButton.style.display = "none";
+        seconds = tens = 0;
+        secondOutput.innerHTML = tensOutput.innerHTML = seconds + "0";
+      });
+    </script>
+  </body>
+</html>
